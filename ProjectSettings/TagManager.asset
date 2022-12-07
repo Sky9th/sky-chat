@@ -24,7 +24,7 @@ TagManager:
   - 
   - 
   - 
-  - Ground
+  - 
   - Layer 1
   - Layer 2
   - Layer 3
@@ -40,9 +40,6 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Ground
-    uniqueID: 1590203725
     locked: 0
   - name: Layer 1
     uniqueID: 2425651459
