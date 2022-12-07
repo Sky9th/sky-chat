@@ -31,10 +31,10 @@ public class MoveController : MonoBehaviour
         if (moveDir.sqrMagnitude > 0)
         {
             moveFinalDir = moveDir;
+            sprite.flipX = moveDir.x < 0;
         }
 
 
-        sprite.flipX = moveDir.x > 0;
 
         animator.SetFloat("Horizontal", moveDir.x);
         animator.SetFloat("Vertical", moveDir.y);
