@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Content" style="align-items: center; justify-content: center; width: 100%; height: 100%;">
+        <ui:VisualElement name="Menu" style="background-image: url(&apos;project://database/Assets/Images/object.png?fileID=1652918102&amp;guid=133ca763e89abc94c92e4484bbe3aad9&amp;type=3#object_8&apos;); width: 50%; height: 100%; -unity-background-scale-mode: scale-to-fit; -unity-slice-left: 0; align-items: center; justify-content: center; padding-top: 99px;">
+            <ui:Button text="START" display-tooltip-when-elided="true" class="button" style="padding-top: 20px; padding-bottom: 20px; font-size: 50px; margin-top: 1px; width: 60%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

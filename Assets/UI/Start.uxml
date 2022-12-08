@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="Template" src="project://database/Assets/UI/Template.uxml?fileID=9197481963319205126&amp;guid=7e84d567ac0080e44879290231f59c5d&amp;type=3#Template" />
+    <ui:Template name="Menu" src="project://database/Assets/UI/Menu.uxml?fileID=9197481963319205126&amp;guid=aa517a21c827f8745896c40baab59ff0&amp;type=3#Menu" />
+    <ui:Instance template="Template" name="Template" style="width: 100%; height: 100%;" />
+    <ui:Instance template="Menu" name="Menu" style="position: absolute; top: 10%; bottom: 10px; width: 100%; height: 80%;" />
+</ui:UXML>

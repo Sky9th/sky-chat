@@ -1,0 +1,7 @@
+.button {
+    width: 50%;
+    height: auto;
+    font-size: 36px;
+    -unity-font: url('project://database/Library/unity%20default%20resources?fileID=10102&guid=0000000000000000e000000000000000&type=0#Arial');
+    color: rgba(0, 158, 255, 255);
+}
