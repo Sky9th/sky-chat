@@ -1,7 +1,32 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="Content" style="align-items: center; justify-content: center; width: 100%; height: 100%;">
-        <ui:VisualElement name="Menu" style="background-image: url(&apos;project://database/Assets/Images/object.png?fileID=1652918102&amp;guid=133ca763e89abc94c92e4484bbe3aad9&amp;type=3#object_8&apos;); width: 50%; height: 100%; -unity-background-scale-mode: scale-to-fit; -unity-slice-left: 0; align-items: center; justify-content: center; padding-top: 99px;">
-            <ui:Button text="START" display-tooltip-when-elided="true" class="button" style="padding-top: 20px; padding-bottom: 20px; font-size: 50px; margin-top: 1px; width: 60%;" />
+        <ui:VisualElement name="MenuContainer" style="background-image: none; width: 50%; height: 100%; -unity-background-scale-mode: scale-to-fit; -unity-slice-left: 0; align-items: center; justify-content: center; padding-top: 99px; border-left-color: rgb(147, 0, 0); border-right-color: rgb(147, 0, 0); border-top-color: rgb(147, 0, 0); border-bottom-color: rgb(147, 0, 0);">
+            <ui:VisualElement name="Menu" style="background-color: rgba(84, 84, 84, 0.48); border-left-width: 11px; border-right-width: 11px; border-top-width: 11px; border-bottom-width: 11px; width: 715px; height: 80%; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
+                <ui:VisualElement name="MenuHeader" style="border-bottom-width: 2px; border-left-color: rgb(190, 189, 189); border-right-color: rgb(190, 189, 189); border-top-color: rgb(190, 189, 189); border-bottom-color: rgb(190, 189, 189);">
+                    <ui:VisualElement name="VisualElement" style="align-items: center; justify-content: center; height: 109px;">
+                        <ui:Label text="LOGIN" display-tooltip-when-elided="true" style="font-size: 76px; color: rgb(0, 158, 255);" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="MenuList" style="align-items: center; height: 90%; margin-top: 0; margin-left: 0; margin-right: 0; margin-bottom: 0; padding-left: 32px; padding-right: 32px; padding-top: 64px; padding-bottom: 32px;">
+                    <ui:VisualElement name="MenuItem" style="flex-direction: row; width: 100%; margin-bottom: 30px; justify-content: flex-start; align-items: center;">
+                        <ui:VisualElement name="MenuLabel">
+                            <ui:Label text="Email" display-tooltip-when-elided="true" style="font-size: 40px; margin-right: 30px; justify-content: center; width: 190px; color: rgba(255, 255, 255, 255);" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="MenuInput">
+                            <ui:TextField picking-mode="Ignore" value="filler text" style="height: 55px; width: 358px; margin-left: 3px; font-size: 48px;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="MenuItem" style="flex-direction: row; width: 100%; margin-bottom: 30px;">
+                        <ui:VisualElement name="MenuLabel" style="justify-content: center;">
+                            <ui:Label text="Password" display-tooltip-when-elided="true" style="font-size: 40px; margin-right: 30px; width: 190px; color: rgba(255, 255, 255, 255);" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="MenuInput">
+                            <ui:TextField picking-mode="Ignore" value="filler text" password="true" style="height: 55px; width: 358px; margin-left: 3px; font-size: 48px;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:Button text="START" display-tooltip-when-elided="true" name="Start" class="button" style="padding-top: 20px; padding-bottom: 20px; font-size: 50px; margin-top: 122px; width: 60%; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; justify-content: flex-start;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
