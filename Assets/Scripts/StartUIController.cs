@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -8,40 +10,71 @@ using UnityEngine.UIElements;
 
 public class StartUIController : MonoBehaviour
 {
+    readonly Request req = new();
 
+    VisualElement startBtn;
+    VisualElement captchaImg;
+    TextField inputEmail;
+    TextField inputPassword;
+    TextField inputCode;
     // Start is called before the first frame update
     void Start()
     {
         UIDocument menu = GetComponent<UIDocument>();
         VisualElement root = menu.rootVisualElement;
-        VisualElement button = root.Query<Button>("Start").First();
-        button.RegisterCallback<ClickEvent>(BtnStart);
+
+        inputEmail = root.Query<TextField>("Email").First();
+        inputPassword = root.Query<TextField>("Password").First();
+        inputCode = root.Query<TextField>("Code").First();
+
+        startBtn = root.Query<Button>("Start").First();
+        startBtn.RegisterCallback<ClickEvent>(SignUp);
+
+        captchaImg = root.Query<Button>("Captcha").First();
+        captchaImg.RegisterCallback<ClickEvent>(RefreshCaptcha);
+
+        RefreshCaptcha(null);
     }
 
-    IEnumerator Login()
+    private void SignUp(ClickEvent evt)
     {
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormFileSection("my file data", "myfile.txt"));
+        Dictionary<string,string> loginForm = new Dictionary<string, string> { };
 
-        UnityWebRequest www = UnityWebRequest.Post("http://api.skyadmin.sky9th.cn/user/login", formData);
-        yield return www.SendWebRequest();
+        loginForm.Add("mail", inputEmail.value);
+        loginForm.Add("password", inputPassword.value);
+        loginForm.Add("fingerprint", GetMacAddress());
+        loginForm.Add("code", inputCode.value);
 
-        if (www.result != UnityWebRequest.Result.Success)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            Debug.Log(www.downloadHandler.text);
-            Res res = JsonUtility.FromJson<Res>(www.downloadHandler.text);
-            Debug.Log(res.code);
-        }
+        StartCoroutine(req.requestPost("user/login", loginForm, Login));
     }
 
-    private void BtnStart(ClickEvent evt)
+    private void Login (Res res)
     {
-        StartCoroutine(Login());
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Debug.Log(res);
+        /*if (res.code == "0")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        } else
+        {
+            VisualElement popUp = new VisualElement();
+        }*/
+    }
+
+    private void RefreshCaptcha (ClickEvent evt)
+    {
+        StartCoroutine(req.requestGet("user/captcha", new Dictionary<string, string> { }, DrawCaptcha));
+    }
+
+    private void DrawCaptcha (Res res)
+    {
+        Debug.Log(res.data);
+        string[] b64 = res.data.Split(',');
+        byte[] imageBytes = Convert.FromBase64String(b64[1]);
+        Texture2D tex = new Texture2D(2, 2);
+        tex.LoadImage(imageBytes);
+        StyleBackground bg = new StyleBackground(tex);
+        captchaImg.style.backgroundImage = bg;
+
     }
 
     // Update is called once per frame
@@ -49,18 +82,20 @@ public class StartUIController : MonoBehaviour
     {
         
     }
-}
 
-[System.Serializable]
-public class Res
-{
-
-    public string code;
-    public string msg;
-    public string data;
-
-    public static Res CreateFromJSON(string jsonString)
+    private string GetMacAddress ()
     {
-        return JsonUtility.FromJson<Res>(jsonString);
+        string physicalAddress = "";
+        NetworkInterface[] networkInerfaces = NetworkInterface.GetAllNetworkInterfaces();
+        foreach (NetworkInterface adpater in networkInerfaces)
+        {
+            physicalAddress = adpater.GetPhysicalAddress().ToString();
+            if (physicalAddress != "")
+            {
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(physicalAddress);
+                return System.Convert.ToBase64String(plainTextBytes);
+            }
+        }
+        return physicalAddress;
     }
 }
