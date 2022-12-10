@@ -3,15 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using PopupWindow = UnityEditor.PopupWindow;
+using UnityEngine.UIElements;
 
 public class Request
 {
     readonly string host = "http://api.skyadmin.sky9th.cn/";
 
-    public delegate void Callback(Res res);
+    public delegate void Callback(Res res, UnityWebRequest www);
 
-    public IEnumerator requestPost(string url, Dictionary<string, string> data, Callback callback)
+    readonly UIDocument ui = GameObject.Find("UIDocument").GetComponent<UIDocument>();
+
+    public IEnumerator requestPost(string url, Dictionary<string, string> data, Callback callback = null, Callback fail = null)
     {
 
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
@@ -24,23 +26,10 @@ public class Request
         UnityWebRequest www = UnityWebRequest.Post(host + url, formData);
         www = SetHeader(www);
         yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
-        {
-            Debug.Log(www.error);
-            Debug.Log(Screen.width);
-            Rect rect = new Rect(0, 0, 0, 0);
-            PopupWindow.Show(rect, new PopUp());
-        }
-        else
-        {
-            Debug.Log(www.downloadHandler.text);
-            Res res = JsonUtility.FromJson<Res>(www.downloadHandler.text);
-            callback(res);
-        }
+        handler(www, callback, fail);
     }
 
-    public IEnumerator requestGet(string url, Dictionary<string, string> data, Callback callback)
+    public IEnumerator requestGet(string url, Dictionary<string, string> data, Callback callback = null, Callback fail = null)
     {
         string param = "";
         foreach (KeyValuePair<string, string> kvp in data)
@@ -52,17 +41,35 @@ public class Request
         UnityWebRequest www = UnityWebRequest.Get(host + url + (param.Length > 0 ? '?' : "") + param);
         www = SetHeader(www);
         yield return www.SendWebRequest();
+        handler(www, callback, fail);
+    }
 
+    private void handler (UnityWebRequest www, Callback callback, Callback fail)
+    {
+        Res res = JsonUtility.FromJson<Res>(www.downloadHandler.text);
         if (www.result != UnityWebRequest.Result.Success)
         {
-            Debug.Log(www.error);
+            if (www.responseCode == 400)
+            {
+                new PopUp(ui, "Error", res.msg);
+            }
+            else
+            {
+                new PopUp(ui, "Error", www.error);
+            }
+            fail(res, www);
         }
         else
         {
-            Debug.Log(www.downloadHandler.text);
-            Res res = JsonUtility.FromJson<Res>(www.downloadHandler.text);
-            Debug.Log(res.code);
-            callback(res);
+            if (res.code == "0")
+            {
+                callback(res, www);
+            }
+            else
+            {
+                new PopUp(ui, "Error", res.msg);
+                fail(res, www);
+            }
         }
     }
 

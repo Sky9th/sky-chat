@@ -1,30 +1,52 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PopUp : PopupWindowContent
+public class PopUp : VisualElement
 {
-    //Set the window size
-    public override Vector2 GetWindowSize()
-    {
-        return new Vector2(200, 100);
-    }
+    UIDocument root;
+    VisualElement popUp;
+    private Button confirmBtn;
 
-    public override void OnGUI(Rect rect)
-    {
-        // Intentionally left empty
-    }
+    public event Action onConfirm;
+    public event Action confirmed;
 
-    public override void OnOpen()
+    public PopUp(UIDocument root, string title, string msg)
     {
         Debug.Log("Popup opened: " + this);
+        this.root = root;
 
-        var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/PopUp.uxml");
-        visualTreeAsset.CloneTree(editorWindow.rootVisualElement);
+        VisualTreeAsset uiAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/PopUp.uxml");
+        popUp = uiAsset.CloneTree();
+
+        popUp.style.position = new StyleEnum<Position>(Position.Absolute);
+        popUp.style.left = 0;
+        popUp.style.top = 0;
+        popUp.style.width = Length.Percent(100);
+        popUp.style.height = Length.Percent(100);
+
+        confirmBtn = popUp.Query<Button>().First();
+        confirmBtn.clicked += confirm;
+
+        Label titleLabel = popUp.Query<Label>("Title").First();
+        titleLabel.text = title;
+        Label msgLabel = popUp.Query<Label>("Msg").First();
+        msgLabel.text = msg;
+
+        root.rootVisualElement.Add(popUp);
     }
 
-    public override void OnClose()
+    private void confirm()
     {
-        Debug.Log("Popup closed: " + this);
+        root.rootVisualElement.Remove(popUp);
+        if (confirmed != null)
+        {
+            onConfirm = confirmed;
+        }
+        if (onConfirm != null)
+        {
+            confirmed();
+        }
     }
 }
