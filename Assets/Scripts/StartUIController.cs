@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,6 +10,10 @@ using UnityEngine.UIElements;
 
 public class StartUIController : MonoBehaviour
 {
+
+    [SerializeField]
+    public VisualTreeAsset popUpUxml;
+
     Request req;
 
     UIDocument menu;
@@ -46,17 +49,17 @@ public class StartUIController : MonoBehaviour
 
         if (inputCode.value == "")
         {
-            new PopUp(menu, "Error", "Please input the code");
+            new PopUp(menu, "Error", "Please input the code", popUpUxml);
             return;
         }
         if (inputEmail.value == "")
         {
-            new PopUp(menu, "Error", "Please input the email");
+            new PopUp(menu, "Error", "Please input the email", popUpUxml);
             return;
         }
         if (inputPassword.value == "")
         {
-            new PopUp(menu, "Error", "Please input the password");
+            new PopUp(menu, "Error", "Please input the password", popUpUxml);
             return;
         }
         Debug.Log(inputCode.value);
@@ -64,13 +67,13 @@ public class StartUIController : MonoBehaviour
         Match match = regex.Match(inputEmail.value);
         if (!match.Success)
         {
-            new PopUp(menu, "Error", "Please input the correct Email");
+            new PopUp(menu, "Error", "Please input the correct Email", popUpUxml);
             return;
         }
 
         loginForm.Add("mail", inputEmail.value);
         loginForm.Add("password", inputPassword.value);
-        loginForm.Add("fingerprint", GetMacAddress());
+        loginForm.Add("fingerprint", "TEST");
         loginForm.Add("code", inputCode.value);
 
         StartCoroutine(req.requestPost("user/login", loginForm, Login, LoginFail));
@@ -93,7 +96,7 @@ public class StartUIController : MonoBehaviour
     private void RefreshCaptcha (ClickEvent evt)
     {
         Dictionary<string, string> captchaForm = new Dictionary<string, string> { };
-        captchaForm.Add("fingerprint", GetMacAddress());
+        captchaForm.Add("fingerprint", "TEST");
         StartCoroutine(req.requestPost("user/captcha", captchaForm, DrawCaptcha));
     }
 
@@ -115,7 +118,7 @@ public class StartUIController : MonoBehaviour
         
     }
 
-    private string GetMacAddress ()
+    /*private string GetMacAddress ()
     {
         string physicalAddress = "";
         NetworkInterface[] networkInerfaces = NetworkInterface.GetAllNetworkInterfaces();
@@ -129,7 +132,7 @@ public class StartUIController : MonoBehaviour
             }
         }
         return physicalAddress;
-    }
+    }*/
 }
 
 

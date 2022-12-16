@@ -12,6 +12,7 @@ public class Request
     public delegate void Callback(Res res, UnityWebRequest www);
 
     readonly UIDocument ui = GameObject.Find("UIDocument").GetComponent<UIDocument>();
+    readonly StartUIController startUIController = GameObject.Find("UIDocument").GetComponent<StartUIController>();
 
     public IEnumerator requestPost(string url, Dictionary<string, string> data, Callback callback = null, Callback fail = null)
     {
@@ -51,11 +52,11 @@ public class Request
         {
             if (www.responseCode == 400)
             {
-                new PopUp(ui, "Error", res.msg);
+                new PopUp(ui, "Error", res.msg, startUIController.popUpUxml);
             }
             else
             {
-                new PopUp(ui, "Error", www.error);
+                new PopUp(ui, "Error", www.error, startUIController.popUpUxml);
             }
             fail(res, www);
         }
@@ -67,7 +68,7 @@ public class Request
             }
             else
             {
-                new PopUp(ui, "Error", res.msg);
+                new PopUp(ui, "Error", res.msg, startUIController.popUpUxml);
                 fail(res, www);
             }
         }

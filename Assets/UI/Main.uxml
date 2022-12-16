@@ -1,4 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Template name="Template" src="project://database/Assets/UI/Template.uxml?fileID=9197481963319205126&amp;guid=7e84d567ac0080e44879290231f59c5d&amp;type=3#Template" />
+    <ui:Template name="Chat" src="project://database/Assets/UI/Chat.uxml?fileID=9197481963319205126&amp;guid=4b3abc3bba9a6ef4faf9d57b3bc5ee30&amp;type=3#Chat" />
     <ui:Instance template="Template" name="Template" style="width: 100%; height: 100%;" />
+    <ui:Instance template="Chat" name="Chat" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;" />
 </ui:UXML>

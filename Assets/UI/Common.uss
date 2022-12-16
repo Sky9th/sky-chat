@@ -3,5 +3,20 @@
     height: auto;
     font-size: 36px;
     -unity-font: url('project://database/Library/unity%20default%20resources?fileID=10102&guid=0000000000000000e000000000000000&type=0#Arial');
-    color: rgba(0, 158, 255, 255);
+    color: rgb(0, 158, 255);
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel {
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.63);
 }

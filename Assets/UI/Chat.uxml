@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Common.uss?fileID=7433441132597879392&amp;guid=cca536a9b7210344b80475419e8171f8&amp;type=3#Common" />
+    <Style src="project://database/Assets/UI/Chat.uss?fileID=7433441132597879392&amp;guid=2b3e98dc3c4477e409b379624c3c865f&amp;type=3#Chat" />
+    <ui:VisualElement name="ChatContainer" class="container a">
+        <ui:VisualElement name="ChatPanel" class="panel">
+            <ui:ScrollView name="ChatList" mode="Vertical" focusable="true" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="chatList">
+                <ui:VisualElement name="ChatListItem" class="ChatListItem" style="flex-shrink: 1; height: auto; padding-top: 10px; padding-bottom: 10px;">
+                    <ui:VisualElement style="width: 80%;">
+                        <ui:Label text="Label" display-tooltip-when-elided="true" name="ChatContent" class="ChatContent" style="flex-direction: row; color: rgb(0, 0, 0);" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="align-items: stretch; flex-direction: row; -unity-text-align: upper-left; width: 20%; white-space: normal;">
+                        <ui:Label text="Label" display-tooltip-when-elided="true" name="ChatTime" class="ChatTime" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:ScrollView>
+            <ui:VisualElement name="ChatControl" class="ChatControl">
+                <ui:TextField picking-mode="Ignore" name="ChatInput" readonly="false" class="ChatInput" />
+                <ui:Button text="Send" display-tooltip-when-elided="true" name="ChatBtn" class="ChatBtn" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

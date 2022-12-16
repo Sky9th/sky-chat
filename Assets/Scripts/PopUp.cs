@@ -1,5 +1,4 @@
 using System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,13 +11,11 @@ public class PopUp : VisualElement
     public event Action onConfirm;
     public event Action confirmed;
 
-    public PopUp(UIDocument root, string title, string msg)
+    public PopUp(UIDocument root, string title, string msg, VisualTreeAsset popUpUxml)
     {
         Debug.Log("Popup opened: " + this);
         this.root = root;
-
-        VisualTreeAsset uiAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/PopUp.uxml");
-        popUp = uiAsset.CloneTree();
+        popUp = popUpUxml.CloneTree();
 
         popUp.style.position = new StyleEnum<Position>(Position.Absolute);
         popUp.style.left = 0;
