@@ -27,6 +27,21 @@ public class MainUIController : MonoBehaviour
         inputField.RegisterCallback<BlurEvent>(inputBlur);
 
         GameObject.Find("GameController").GetComponent<GameController>().messageSended += onMessageSended;
+        GameObject.Find("NetworkController").GetComponent<NetworkController>().messageReceived += onMessageReceived;
+    }
+
+    private void onMessageReceived(TcpRecData tcpRecData)
+    {
+        Debug.Log("MainUI Receive msg");
+        Debug.Log(tcpRecData);
+        ScrollView scrollView = uIDocument.rootVisualElement.Query<ScrollView>("ChatList").First();
+        VisualElement item = uIDocument.rootVisualElement.Query<VisualElement>("ChatListItem").First();
+
+        VisualElement newItem = new VisualElement();
+        newItem.style.height = new StyleLength(60);
+        newItem.style.backgroundColor = Color.black;
+
+        scrollView.Add(newItem);
     }
 
     private void onMessageSended()
@@ -55,7 +70,6 @@ public class MainUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isInputChat);
         if (isInputChat && Input.GetKeyDown(KeyCode.Return) && !isSending)
         {
             String msgContent = inputField.value;
@@ -63,8 +77,8 @@ public class MainUIController : MonoBehaviour
 
             Message msg = new Message
             {
-                Time = DateTime.UtcNow.ToString(),
-                Content = msgContent
+                time = DateTime.UtcNow.ToString(),
+                content = msgContent
             };
             isSending = true;
             sendMsg(msg);

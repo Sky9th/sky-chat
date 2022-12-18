@@ -12,22 +12,35 @@
     border-radius: 12px;
     background-color: rgb(255, 255, 255);
     padding: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .ChatListItem {
     widith: 100%;
-    height: 32px;
+    height: auto;
     justify-content: flex-start;
     flex-direction: row;
     border: 1px solid;
-    border-left-color: rgba(195, 195, 195, 255);
-    border-right-color: rgba(195, 195, 195, 255);
-    border-top-color: rgba(195, 195, 195, 255);
-    border-bottom-color: rgba(195, 195, 195, 255);
+    border-left-color: rgb(195, 195, 195);
+    border-right-color: rgb(195, 195, 195);
+    border-top-color: rgb(195, 195, 195);
+    border-bottom-color: rgb(195, 195, 195);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 1px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    align-items: flex-start;
 }
 
 .ChatContent {
@@ -36,9 +49,11 @@
 
 .ChatTime {
     display: inline-block;
-    width: 100%;
+    width: auto;
     -unity-text-align: upper-right;
     color: rgb(118, 118, 118);
+    font-size: 10%;
+    height: auto;
 }
 
 .ChatControl {
@@ -64,5 +79,5 @@
     width: 80%;
     border-radius: 12px;
     max-widith: 100%;
-    font-size: 24px;
+    font-size: 24%;
 }

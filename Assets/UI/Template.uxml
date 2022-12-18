@@ -12,7 +12,7 @@
             <ui:VisualElement name="Copyright" style="align-items: center; width: 100%; justify-content: flex-end;">
                 <ui:Label text="Copyright @ 2023 Sky9th.cn " display-tooltip-when-elided="true" name="Label" />
             </ui:VisualElement>
-            <ui:VisualElement name="GameLogo" style="align-items: auto; background-image: url(&apos;project://database/Assets/Images/object.png?fileID=-2037673790&amp;guid=133ca763e89abc94c92e4484bbe3aad9&amp;type=3#object_0&apos;); width: 25%; height: 100%; -unity-background-scale-mode: scale-to-fit; -unity-slice-left: 0; -unity-slice-right: 0;" />
+            <ui:VisualElement name="GameLogo" style="align-items: auto; background-image: url(&apos;project://database/Assets/Images/object.png?fileID=-2037673790&amp;guid=133ca763e89abc94c92e4484bbe3aad9&amp;type=3#object_0&apos;); width: 12%; height: 100%; -unity-background-scale-mode: scale-to-fit; -unity-slice-left: 0; -unity-slice-right: 0;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

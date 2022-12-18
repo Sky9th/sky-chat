@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class TcpSendData
 {
-    public string ID { get; set; }
-    public string SessionKey { get; set; }
-    public long Time;
-    public Message Msg { get; set; }
-    public Player PlayerInfo { get; set; }
+    public string id { get; set; }
+    public string sessionKey { get; set; }
+    public long time;
+    public Message msg { get; set; }
+    public Player playerInfo { get; set; }
 
     public string ToJson ()
     {
         TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-        Time = Convert.ToInt64(ts.TotalSeconds);
+        time = Convert.ToInt64(ts.TotalSeconds);
 
         return Newtonsoft.Json.JsonConvert.SerializeObject(this);
     }
@@ -23,18 +23,19 @@ public class TcpSendData
 
 public class TcpRecData
 {
-    public List<Player> PlayerList { get; set; }
-    public List<Message> MsgList { get; set; }
+    public string msg;
+    public Dictionary<String, Player> playerList { get; set; }
+    public List<Message> msgList { get; set; }
 }
 
 public class Player
 {
-    public string Mail { get; set; }
-    public string PositionX { get; set; }
-    public string PositionY { get; set; }
+    public string mail { get; set; }
+    public string positionX { get; set; }
+    public string positionY { get; set; }
 }
 public class Message
 {
-    public string Time { get; set; }
-    public string Content { get; set; }
+    public string time { get; set; }
+    public string content { get; set; }
 }

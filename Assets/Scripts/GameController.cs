@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,24 +10,25 @@ public delegate void MessageSended();
 
 public class GameController : MonoBehaviour
 {
-
-    public GameObject tcpObj;
+    public NetworkController networkController;
     public GameObject player;
     public UIDocument uIDocument;
-
-    TcpClient tcp;
-    bool stop = false;
 
     bool isWaitingMessage = true;
     Message waitingMessage = new();
 
     public event MessageSended messageSended;
 
+    [DllImport("__Internal")]
+    private static extern void jSLibWebSocketInit();
+    [DllImport("__Internal")]
+    private static extern void jSLibWebSocketSend(string msg);
+
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log(PlayerPrefs.GetString(Store.SESSION_KEY));
-        tcp = tcpObj.GetComponent<TcpClient>();
+        networkController = GameObject.Find("NetworkController").GetComponent<NetworkController>();
         GameObject.Find("UIDocument").GetComponent<MainUIController>().sendMsg += getWaitingMsg;
     }
 
@@ -44,33 +46,31 @@ public class GameController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if ((tcp.isConnected && !stop) || (tcp.isConnected && !isWaitingMessage))
+        if (!isWaitingMessage)
         {
             TcpSendData tcpSendData = new TcpSendData();
-            tcpSendData.ID = "testID";
-            tcpSendData.SessionKey = PlayerPrefs.GetString(Store.SESSION_KEY);
+            tcpSendData.id = "testID";
+            tcpSendData.sessionKey = PlayerPrefs.GetString(Store.SESSION_KEY);
 
-            tcpSendData.Msg = waitingMessage;
+            tcpSendData.msg = waitingMessage;
             if (!isWaitingMessage)
             {
+                Console.WriteLine();
                 Debug.Log(waitingMessage);
 
                 isWaitingMessage = true;
                 waitingMessage = new Message();
                 messageSended();
-                Debug.Log(11111111);
             }
 
             Player playerInfo = new();
-            playerInfo.Mail = "testMail";
-            playerInfo.PositionX = player.transform.position.x.ToString();
-            playerInfo.PositionY = player.transform.position.y.ToString();
+            playerInfo.mail = "testMail";
+            playerInfo.positionX = player.transform.position.x.ToString();
+            playerInfo.positionY = player.transform.position.y.ToString();
 
-            tcpSendData.PlayerInfo = playerInfo;
-
-            tcp.SocketSend(tcpSendData.ToJson());
-
-            stop = true;
+            tcpSendData.playerInfo = playerInfo;
+            string sendStr = tcpSendData.ToJson();
+            networkController.Send(sendStr);
         }
     }
 }
