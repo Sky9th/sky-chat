@@ -1,6 +1,8 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 
-public delegate void MessageReceived(TcpRecData tcpRecData);
+public delegate void BoardcastReceived(TcpRecData tcpRecData);
+public delegate void MessageReceived(TcpRecDataPer tcpRecData);
 
 public class NetworkController : MonoBehaviour
 {
@@ -14,9 +16,15 @@ public class NetworkController : MonoBehaviour
     private string tcpServerUrl = "127.0.0.1";
     private int tcpServerPort = 6666;
 
+    public BoardcastReceived boardcastReceived;
     public MessageReceived messageReceived;
 
     private bool isConnected = false;
+
+    [DllImport("__Internal")]
+    private static extern void jSLibWebSocketInit();
+    [DllImport("__Internal")]
+    private static extern void jSLibWebSocketSend(string msg);
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +32,8 @@ public class NetworkController : MonoBehaviour
         switch (platform)
         {
             case RuntimePlatform.WebGLPlayer:
-                wsClient.init(wsServerUrl + ':' + wsServerPort);
+                jSLibWebSocketInit();
+                //wsClient.init(wsServerUrl + ':' + wsServerPort);
                 break;
             default:
                 tcpClient.InitSocket(tcpServerUrl, tcpServerPort);
@@ -52,9 +61,23 @@ public class NetworkController : MonoBehaviour
         }
         if (msg.Length > 0)
         {
-            Debug.Log("receive£º" + msg);
-            TcpRecData tcpRecData = Newtonsoft.Json.JsonConvert.DeserializeObject<TcpRecData>(msg);
-            messageReceived(tcpRecData);
+            int typeNum = int.Parse(msg.Substring(0, 2));
+            string data = msg.Substring(2);
+            Debug.Log("receive type£º" + typeNum);
+            Debug.Log("receive data£º" + data);
+            if (typeNum == (int)SendType.ALL)
+            {
+                TcpRecData tcpRecData = Newtonsoft.Json.JsonConvert.DeserializeObject<TcpRecData>(data);
+                boardcastReceived(tcpRecData);
+            } else if (typeNum == (int)SendType.PERSONAL)
+            {
+                TcpRecDataPer tcpRecData = Newtonsoft.Json.JsonConvert.DeserializeObject<TcpRecDataPer>(data);
+                Debug.Log(tcpRecData.ToString()) ;
+                messageReceived(tcpRecData);
+            } else
+            {
+                Debug.LogError("error msg type");
+            }
         }
     }
 

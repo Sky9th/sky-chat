@@ -23,9 +23,16 @@ public class TcpSendData
 
 public class TcpRecData
 {
+    public string type;
     public string msg;
     public Dictionary<String, Player> playerList { get; set; }
     public List<Message> msgList { get; set; }
+}
+
+public class TcpRecDataPer
+{
+    public string type;
+    public string id;
 }
 
 public class Player
@@ -38,4 +45,10 @@ public class Message
 {
     public string time { get; set; }
     public string content { get; set; }
+}
+
+enum SendType
+{
+    ALL,
+    PERSONAL
 }

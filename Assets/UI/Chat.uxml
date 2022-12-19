@@ -1,25 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Common.uss?fileID=7433441132597879392&amp;guid=cca536a9b7210344b80475419e8171f8&amp;type=3#Common" />
     <Style src="project://database/Assets/UI/Chat.uss?fileID=7433441132597879392&amp;guid=2b3e98dc3c4477e409b379624c3c865f&amp;type=3#Chat" />
-    <ui:VisualElement name="ChatContainer" class="container a">
+    <ui:GroupBox name="ChatContainer" class="container" style="visibility: visible; display: flex;">
         <ui:VisualElement name="ChatPanel" class="panel" style="font-size: 25%; padding-left: 16px; padding-right: 16px; padding-top: 16px; padding-bottom: 16px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; bottom: 5%; left: 1%;">
-            <ui:ScrollView name="ChatList" mode="Vertical" focusable="true" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="chatList" style="padding-left: 8px; padding-right: 8px; padding-top: 0; padding-bottom: 0;">
-                <ui:VisualElement name="ChatListItem" class="ChatListItem" style="flex-shrink: 1; height: auto; padding-top: 6px; padding-bottom: 3px; padding-left: 0; padding-right: 6px; flex-wrap: wrap; justify-content: space-between; overflow: visible; visibility: visible; display: flex;">
-                    <ui:VisualElement style="width: 80%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: flex-start;">
-                        <ui:Label text="Label" display-tooltip-when-elided="true" name="ChatContent" class="ChatContent" style="flex-direction: row; color: rgb(0, 0, 0); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 10%;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="align-items: auto; flex-direction: row-reverse; -unity-text-align: upper-right; width: 19%; white-space: normal; font-size: initial;">
-                        <ui:Label text="Label" display-tooltip-when-elided="true" name="ChatTime" class="ChatTime" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 10%; -unity-text-align: upper-right; width: auto;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement style="width: 100%;">
-                        <ui:Label text="Label" display-tooltip-when-elided="true" name="ChatName" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; color: rgb(154, 154, 154);" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:ScrollView>
+            <ui:ScrollView name="ChatList" mode="Vertical" focusable="true" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="chatList" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
             <ui:VisualElement name="ChatControl" class="ChatControl" style="height: 20%; margin-top: 8px;">
-                <ui:TextField picking-mode="Ignore" name="ChatInput" readonly="false" class="ChatInput" style="border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; color: rgb(53, 53, 53); font-size: 38%; background-color: rgb(207, 207, 207);" />
-                <ui:Button text="Send" display-tooltip-when-elided="true" name="ChatBtn" class="ChatBtn" style="font-size: 15%; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; margin-left: auto; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                <ui:TextField picking-mode="Ignore" name="ChatInput" readonly="false" focusable="false" class="ChatInput" style="border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; color: rgb(53, 53, 53); font-size: 38%; background-color: rgb(207, 207, 207);" />
+                <ui:Button text="Send" display-tooltip-when-elided="true" name="ChatBtn" focusable="false" class="ChatBtn" style="font-size: 15%; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; margin-left: auto; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
             </ui:VisualElement>
         </ui:VisualElement>
-    </ui:VisualElement>
+    </ui:GroupBox>
 </ui:UXML>

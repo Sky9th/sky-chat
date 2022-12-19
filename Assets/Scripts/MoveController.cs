@@ -11,6 +11,7 @@ public class MoveController : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
     MainUIController UIController;
+    NetworkPlayer networkPlayer;
 
     float moveSpeed = 5f;
 
@@ -24,12 +25,14 @@ public class MoveController : MonoBehaviour
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         UIController = GameObject.Find("UIDocument").GetComponent<MainUIController>();
+        networkPlayer = GetComponent<NetworkPlayer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!UIController.getIsInputChat())
+        Debug.Log(UIController.getIsInputChat());
+        if (!UIController.getIsInputChat() && networkPlayer.IsLocalPlayer())
         {
             moveDir.x = Input.GetAxisRaw("Horizontal");
             moveDir.y = Input.GetAxisRaw("Vertical");

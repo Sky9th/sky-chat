@@ -44,13 +44,7 @@ public class TcpClient
         //不断接收服务器发来的数据
         while (true)
         {
-            recvData = new byte[1024];
-            recvLen = serverSocket.Receive(recvData);
-            recvStr = Encoding.UTF8.GetString(recvData, 0, recvLen);
-            if (recvStr.Length > 0)
-            {
-                recDatas.Enqueue(recvStr);
-            }
+            parseMsg();
         }
     }
 
@@ -69,12 +63,21 @@ public class TcpClient
             Task.Delay(50).Wait();
         }
 
-        //输出初次连接收到的字符串
+        parseMsg();
+    }
+
+    private void parseMsg ()
+    {
+        recvData = new byte[1024];
         recvLen = serverSocket.Receive(recvData);
-        recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
+        recvStr = Encoding.UTF8.GetString(recvData, 0, recvLen);
         if (recvStr.Length > 0)
         {
-            Debug.Log(recvStr);
+            String[] list = recvStr.Split(Environment.NewLine, StringSplitOptions.None);
+            foreach (String vo in list)
+            {
+                recDatas.Enqueue(vo);
+            }
         }
     }
 
@@ -85,7 +88,6 @@ public class TcpClient
         //数据类型转换
         sendData = Encoding.UTF8.GetBytes(sendStr + Environment.NewLine);
         //发送
-        Debug.Log("Client send:" + sendStr);    
         serverSocket.Send(sendData, sendData.Length, SocketFlags.None);
     }
 
