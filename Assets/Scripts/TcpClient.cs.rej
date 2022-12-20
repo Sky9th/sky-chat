@@ -1,9 +1,0 @@
-diff a/Assets/Scripts/TcpClient.cs b/Assets/Scripts/TcpClient.cs	(rejected hunks)
-@@ -71,7 +71,6 @@
-         //������������յ����ַ���
-         recvLen = serverSocket.Receive(recvData);
-         recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
--        if (recvStr.Length > 0)
-     }
- 
-     public void SocketSend(string sendStr)

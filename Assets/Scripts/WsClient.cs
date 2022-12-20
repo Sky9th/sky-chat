@@ -35,7 +35,6 @@ public class WsClient
         {
             // Parse newly received messages
             receiveQueue.TryDequeue(out msg);
-            Debug.Log(msg);
         }
     }
 
@@ -45,7 +44,6 @@ public class WsClient
     /// <param name="serverURL">Server URL.</param>
     public void init(string serverURL)
     {
-        Debug.Log("WebSocket init.");
         encoder = new UTF8Encoding();
         ws = new ClientWebSocket();
         serverUri = new Uri(serverURL);
@@ -61,7 +59,6 @@ public class WsClient
 
     private async void RunConnect()
     {
-        Debug.Log("WebSocket Connect.");
         await Connect();
     }
 
@@ -71,14 +68,11 @@ public class WsClient
     /// <returns>The connect.</returns>
     public async Task Connect()
     {
-        Debug.Log("Connecting to: " + serverUri);
         await ws.ConnectAsync(serverUri, CancellationToken.None);
         while (IsConnecting())
         {
-            Debug.Log("Waiting to connect...");
             Task.Delay(50).Wait();
         }
-        Debug.Log("Connect status: " + ws.State);
         isConnected = IsConnectionOpen();
     }
 
@@ -108,7 +102,6 @@ public class WsClient
     public void Send(string message)
     {
         byte[] buffer = encoder.GetBytes(message);
-        Debug.Log("Message to queue for send: " + buffer.Length + ", message: " + message);
         var sendBuf = new ArraySegment<byte>(buffer);
         sendQueue.Add(sendBuf);
     }
@@ -117,7 +110,6 @@ public class WsClient
     /// </summary>
     private async void RunSend()
     {
-        Debug.Log("WebSocket Message Sender looping.");
         ArraySegment<byte> msg;
         while (true)
         {
@@ -169,7 +161,6 @@ public class WsClient
     /// </summary>
     private async void RunReceive()
     {
-        Debug.Log("WebSocket Message Receiver looping.");
         string result;
         while (true)
         {

@@ -13,7 +13,6 @@ public class PopUp : VisualElement
 
     public PopUp(UIDocument root, string title, string msg, VisualTreeAsset popUpUxml)
     {
-        Debug.Log("Popup opened: " + this);
         this.root = root;
         popUp = popUpUxml.CloneTree();
 

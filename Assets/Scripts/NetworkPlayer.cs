@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,16 +8,23 @@ public class NetworkPlayer : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField]
     public string networkIdentify { get; set; }
+    public bool ready = false;
 
     void Start()
     {
-        Debug.Log(networkIdentify);
+        StartCoroutine(setPlayerActive());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+    private IEnumerator setPlayerActive()
+    {
+        yield return new WaitForSeconds(2);
+        ready = true;
+        if (IsLocalPlayer()) GameObject.Find("CinemaCamera").GetComponent<CinemachineVirtualCamera>().m_Follow = gameObject.transform;
     }
 
     public bool IsLocalPlayer ()

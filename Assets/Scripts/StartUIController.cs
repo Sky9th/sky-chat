@@ -62,7 +62,6 @@ public class StartUIController : MonoBehaviour
             new PopUp(menu, "Error", "Please input the password", popUpUxml);
             return;
         }
-        Debug.Log(inputCode.value);
         Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
         Match match = regex.Match(inputEmail.value);
         if (!match.Success)
@@ -81,7 +80,6 @@ public class StartUIController : MonoBehaviour
 
     private void Login (Res res, UnityWebRequest www)
     {
-        Debug.Log(res.data);
         LoginData ld = JsonUtility.FromJson<LoginData>(www.downloadHandler.text);
         PlayerPrefs.SetString(Store.SESSION_KEY, ld.data.sessionKey);
         PlayerPrefs.SetString(Store.EMAIL, ld.data.mail);
@@ -102,7 +100,6 @@ public class StartUIController : MonoBehaviour
 
     private void DrawCaptcha (Res res, UnityWebRequest www)
     {
-        Debug.Log(res.data);
         string[] b64 = res.data.Split(',');
         byte[] imageBytes = Convert.FromBase64String(b64[1]);
         Texture2D tex = new Texture2D(2, 2);

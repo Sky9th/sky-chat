@@ -111,7 +111,6 @@ public class Request
         "lbr0G3IibEf7R21s8Yz65B6Z1ERrd/ZZzQIvVoo95YJMuk8oKJrVylcYin7RiXRM\n" +
         "UOxcgVUarN4Pn1DByQIDAQAB");
         string encryptStr = rsa.Encrypt(encryptJson);
-        Debug.Log(encryptStr);
         return encryptStr;
     }
 }

@@ -40,7 +40,6 @@ public class TcpClient
     void SocketReceive()
     {
         SocketConnet();
-        Debug.Log("start tcp connection");
         //不断接收服务器发来的数据
         while (true)
         {
@@ -55,7 +54,6 @@ public class TcpClient
         //定义套接字类型,必须在子线程中定义
         serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         //连接
-        Debug.Log(isConnected);
         while (!isConnected)
         {
             serverSocket.Connect(ipEnd);
@@ -91,7 +89,7 @@ public class TcpClient
         serverSocket.Send(sendData, sendData.Length, SocketFlags.None);
     }
 
-    void SocketQuit()
+    public void SocketQuit()
     {
         //关闭线程
         if (connectThread != null)
@@ -103,6 +101,5 @@ public class TcpClient
         //最后关闭服务器
         if (serverSocket != null)
             serverSocket.Close();
-        Debug.Log("Disconnect");
     }
 }

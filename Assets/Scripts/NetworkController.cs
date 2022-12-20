@@ -1,8 +1,8 @@
+using RecEvent;
+using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
-
-public delegate void BoardcastReceived(TcpRecData tcpRecData);
-public delegate void MessageReceived(TcpRecDataPer tcpRecData);
 
 public class NetworkController : MonoBehaviour
 {
@@ -16,8 +16,15 @@ public class NetworkController : MonoBehaviour
     private string tcpServerUrl = "127.0.0.1";
     private int tcpServerPort = 6666;
 
-    public BoardcastReceived boardcastReceived;
-    public MessageReceived messageReceived;
+    public Action<All> AllReceived;
+    public Action<Active> ActiveReceived;
+    public Action<InActive> InActiveReceived;
+    public Action<Msg> MsgReceived;
+
+    public int receivePackCount = 0;
+    public int sendPackCount = 0;
+    public long lastReceiveTime = ((DateTime.UtcNow.ToUniversalTime().Ticks - 621355968000000000) / 10000);
+    public float receiveSpendTime = 0;
 
     private bool isConnected = false;
 
@@ -29,6 +36,7 @@ public class NetworkController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         switch (platform)
         {
             case RuntimePlatform.WebGLPlayer:
@@ -63,36 +71,55 @@ public class NetworkController : MonoBehaviour
         {
             int typeNum = int.Parse(msg.Substring(0, 2));
             string data = msg.Substring(2);
-            Debug.Log("receive type£º" + typeNum);
-            Debug.Log("receive data£º" + data);
-            if (typeNum == (int)SendType.ALL)
+            switch (typeNum)
             {
-                TcpRecData tcpRecData = Newtonsoft.Json.JsonConvert.DeserializeObject<TcpRecData>(data);
-                boardcastReceived(tcpRecData);
-            } else if (typeNum == (int)SendType.PERSONAL)
-            {
-                TcpRecDataPer tcpRecData = Newtonsoft.Json.JsonConvert.DeserializeObject<TcpRecDataPer>(data);
-                Debug.Log(tcpRecData.ToString()) ;
-                messageReceived(tcpRecData);
-            } else
-            {
-                Debug.LogError("error msg type");
+                case (int)RecType.ALL:
+                    All rec = Newtonsoft.Json.JsonConvert.DeserializeObject<All>(data);
+                    AllReceived(rec);
+                    break;
+                case (int)RecType.ACTIVE:
+                    ActiveReceived(Newtonsoft.Json.JsonConvert.DeserializeObject<Active>(data));
+                    break;
+                case (int)RecType.INACTIVE:
+                    InActiveReceived(Newtonsoft.Json.JsonConvert.DeserializeObject<InActive>(data));
+                    break;
+                case (int)RecType.MSG:
+                    Msg msssg = Newtonsoft.Json.JsonConvert.DeserializeObject<Msg>(data);
+                    MsgReceived(msssg);
+                    break;
+                default:
+                    throw new Exception("error msg type");
             }
+            receivePackCount++;
+            receiveSpendTime = ((DateTime.UtcNow.ToUniversalTime().Ticks - 621355968000000000) / 10000) - lastReceiveTime;
+            lastReceiveTime = ((DateTime.UtcNow.ToUniversalTime().Ticks - 621355968000000000) / 10000);
+
         }
     }
 
     public void Send (string msg)
     {
-        Debug.Log("Send:" + msg);
         switch (platform)
         {
             case RuntimePlatform.WebGLPlayer:
-                Debug.Log("Platform:WebGLPlayer");
-                wsClient.Send(msg);
+                //wsClient.Send(msg);
+                jSLibWebSocketSend(msg);
                 break;
             default:
-                Debug.Log("Platform:WindowsPlayer");
                 tcpClient.SocketSend(msg);
+                break;
+        }
+        sendPackCount++;
+    }
+
+    public void Disconnect ()
+    {
+        switch (platform)
+        {
+            case RuntimePlatform.WebGLPlayer:
+                break;
+            default:
+                tcpClient.SocketQuit();
                 break;
         }
     }

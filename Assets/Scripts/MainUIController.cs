@@ -1,3 +1,4 @@
+using RecEvent;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ public class MainUIController : MonoBehaviour
         inputField.RegisterCallback<BlurEvent>(inputBlur);
 
         GameObject.Find("GameController").GetComponent<GameController>().messageSended += onMessageSended;
-        GameObject.Find("NetworkController").GetComponent<NetworkController>().boardcastReceived += onBoardcastReceived;
+        GameObject.Find("NetworkController").GetComponent<NetworkController>().AllReceived += onAllReceived;
         scrollView = uIDocument.rootVisualElement.Query<ScrollView>("ChatList").First();
 
         scrollView.RegisterCallback<WheelEvent>(wheelScroll);
@@ -42,7 +43,6 @@ public class MainUIController : MonoBehaviour
 
     private void wheelScroll(WheelEvent evt)
     {
-        Debug.Log(evt.ToString());
         if (!isScrollBottom)
         {
             isScrollUp = true;
@@ -54,10 +54,8 @@ public class MainUIController : MonoBehaviour
 
     private void scrollCheck(float obj)
     {
-        Debug.Log("scroll offeset");
         if (scrollView.verticalScroller.highValue == obj)
         {
-            Debug.Log("To bottom");
             isScrollBottom = true;
         } else
         {
@@ -65,14 +63,11 @@ public class MainUIController : MonoBehaviour
         }
     }
 
-    private void onBoardcastReceived(TcpRecData tcpRecData)
+    private void onAllReceived(All data)
     {
-        Debug.Log("MainUI Receive msg");
-        Debug.Log(tcpRecData);
-
-        for (int i = 0; i < tcpRecData.msgList.Count; i++)
+        for (int i = 0; i < data.msgList.Count; i++)
         {
-            Message message = tcpRecData.msgList[i];
+            Message message = data.msgList[i];
 
             VisualElement newItem = new VisualElement();
             newItem.name = "ChatListItem";
@@ -133,8 +128,6 @@ public class MainUIController : MonoBehaviour
     private async void scrollToBottom(ScrollView scrollView)
     {
         await Task.Delay(100);
-        Debug.Log(isScrollUp);
-        Debug.Log(isScrollBottom);
         if (scrollView.verticalScroller.highValue > 0 && !isScrollUp)
         {
             scrollView.scrollOffset = new Vector2(0, scrollView.verticalScroller.highValue);
@@ -160,19 +153,16 @@ public class MainUIController : MonoBehaviour
 
     private void onMessageSended()
     {
-        Debug.Log("onMessageSended");
         isSending = false;
     }
 
     private void inputBlur(BlurEvent evt)
     {
-        Debug.Log("blur");
         isInputChat = false;
     }
 
     private void inputFocus(FocusEvent evt)
     {
-        Debug.Log("Focus");
         isInputChat = true;
     }
 
