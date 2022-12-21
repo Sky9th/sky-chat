@@ -5,30 +5,30 @@ using UnityEngine;
 
 public class TcpSendData
 {
-    public string id { get; set; }
-    public string sessionKey { get; set; }
+    public string id;
+    public string sessionKey;
     public long time;
-    public Message msg { get; set; }
-    public Player playerInfo { get; set; }
+    public Message msg;
+    public Player playerInfo;
 
     public string ToJson ()
     {
         TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
         time = Convert.ToInt64(ts.TotalSeconds);
-
         return Newtonsoft.Json.JsonConvert.SerializeObject(this);
     }
-
 }
 
 public class Player
 {
-    public string mail { get; set; }
-    public string positionX { get; set; }
-    public string positionY { get; set; }
+    public string mail;
+    public string positionX;
+    public string positionY;
+    public float moveDirX;
+    public float moveDirY;
 }
 public class Message
 {
-    public string time { get; set; }
-    public string content { get; set; }
+    public string time;
+    public string content;
 }

@@ -1,11 +1,11 @@
 mergeInto(LibraryManager.library, {
-    jSLibWebSocketInit: function () {
+    jSLibWebSocketInit: function (url, port) {
         let socket;
         if (!window.WebSocket) {
             window.WebSocket = window.MozWebSocket;
         }
         if (window.WebSocket) {
-            socket = new WebSocket("ws://127.0.0.1:6667/websocket");
+            socket = new WebSocket(url + ":"+ port +"/websocket");
             socket.onopen = function (event) {
                 console.log("client connected", event)
                 if (window.myGameInstance) {
@@ -15,7 +15,7 @@ mergeInto(LibraryManager.library, {
             socket.onmessage = function (event) {
                 console.log("client receive msg", event)
                 let data = event.data;
-                let obj = JSON.parse(data);
+                window.myGameInstance.SendMessage('NetworkController', 'wsReceiveCallback', data);
             }
             socket.onclose = function (event) {
                 console.log("client close", event)
@@ -26,12 +26,15 @@ mergeInto(LibraryManager.library, {
         } else {
             alert("您的浏览器不支持WebSocket协议！");
         }
-        this.socket = socket;
+        window.jSLibWebSocket = socket;
         return socket;
     },
     jSLibWebSocketSend: function (sendStr) {
         console.log("receive sendstr:", sendStr)
         console.log("send:",  UTF8ToString(sendStr))
-        this.socket.send(UTF8ToString(sendStr));
+        window.jSLibWebSocket.send(UTF8ToString(sendStr));
+    },
+    jSLibWebSocketClose: function (sendStr) {
+        window.jSLibWebSocket.close();
     }
 });

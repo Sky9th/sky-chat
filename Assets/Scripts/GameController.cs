@@ -25,7 +25,8 @@ public class GameController : MonoBehaviour
     Message waitingMessage = new();
 
     public event MessageSended messageSended;
-    public Dictionary<String, GameObject> onlinePlayerList;
+
+    public Dictionary<string, string> onlinePlayer = new Dictionary<string, string>();
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +37,6 @@ public class GameController : MonoBehaviour
         GameObject.Find("NetworkController").GetComponent<NetworkController>().InActiveReceived += onInActiveReceived;
         GameObject.Find("NetworkController").GetComponent<NetworkController>().AllReceived += onAllReceived;
         GameObject.Find("NetworkController").GetComponent<NetworkController>().MsgReceived += onMsgReceived;
-        onlinePlayerList = new Dictionary<string, GameObject>();
         StartCoroutine(sendTcpData());
     }
 
@@ -53,11 +53,12 @@ public class GameController : MonoBehaviour
 
     private void onInActiveReceived(InActive data)
     {
-        foreach (KeyValuePair<String, GameObject> p in onlinePlayerList)
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < players.Length; i++)
         {
-            if (p.Key == data.id)
+            if (players[i].GetComponent<NetworkPlayer>().networkIdentify == data.id)
             {
-                Destroy(p.Value);
+                Destroy(players[i]);
                 return;
             }
         }
@@ -65,16 +66,16 @@ public class GameController : MonoBehaviour
 
     private void onAllReceived(All data)
     {
-        Dictionary<String, Player> playerList = data.playerList;
+        Dictionary<string, Player> playerList = data.playerList;
         foreach (KeyValuePair<string, Player> p in playerList)
         {
             if (p.Key == PlayerPrefs.GetString(Store.NETWORK_IDENTIFY)) continue;
-            if (!onlinePlayerList.ContainsKey(p.Key))
+            if (!onlinePlayer.ContainsKey(p.Key))
             {
                 GameObject insertPlayer = Instantiate(playerPrefab, spwanPoint.transform.position, Quaternion.identity);
                 NetworkPlayer networkPlayer = insertPlayer.GetComponent<NetworkPlayer>();
                 networkPlayer.networkIdentify = p.Key;
-                onlinePlayerList.Add(p.Key, insertPlayer);
+                onlinePlayer.Add(p.Key, "Spawn");
             }
         }
     }
@@ -110,6 +111,8 @@ public class GameController : MonoBehaviour
                     playerInfo.mail = "testMail";
                     playerInfo.positionX = player.transform.position.x.ToString();
                     playerInfo.positionY = player.transform.position.y.ToString();
+                    playerInfo.moveDirX = player.GetComponent<MoveController>().moveDir.x;
+                    playerInfo.moveDirY = player.GetComponent<MoveController>().moveDir.y;
                     tcpSendData.playerInfo = playerInfo;
                 }
 

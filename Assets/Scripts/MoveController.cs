@@ -13,12 +13,13 @@ public class MoveController : MonoBehaviour
     SpriteRenderer sprite;
     MainUIController UIController;
     NetworkPlayer networkPlayer;
+    Player playerInfo;
 
     float moveSpeed = 5f;
 
-    Vector2 moveDir;
-    Vector2 moveFinalDir;
-    Vector2 newPos;
+    public Vector2 moveDir;
+    public Vector2 moveFinalDir;
+    public Vector2 newPos;
 
     // Start is called before the first frame update
     void Start()
@@ -31,43 +32,31 @@ public class MoveController : MonoBehaviour
         networkPlayer = GetComponent<NetworkPlayer>();
     }
 
-    private void onAllReceived(All data)
+    private void onAllReceived(All obj)
     {
-        Dictionary<string, GameObject> onlinePlayerList = GameObject.Find("GameController").GetComponent<GameController>().onlinePlayerList;
-        Dictionary<String, Player> playerList = data.playerList;
-        foreach (KeyValuePair<string, Player> p in playerList)
-        {
-            if (p.Key == PlayerPrefs.GetString(Store.NETWORK_IDENTIFY)) continue;
-            if (onlinePlayerList.ContainsKey(p.Key))
-            {
-                GameObject player;
-                onlinePlayerList.TryGetValue(p.Key,out player);
-                if (player && networkPlayer.ready && !p.Value.Equals(null))
-                {
-                    newPos = new Vector2(float.Parse(p.Value.positionX), float.Parse(p.Value.positionY));
-                    moveDir = new Vector2(player.transform.position.x, player.transform.position.y) - newPos;
-                    animator.SetFloat("Horizontal", moveDir.x);
-                    animator.SetFloat("Vertical", moveDir.y);
-                    animator.SetFloat("Speed", moveDir.sqrMagnitude);
-                }
-            }
-        }
+        playerInfo = obj.playerList[networkPlayer.networkIdentify];
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!UIController.getIsInputChat() && networkPlayer.IsLocalPlayer())
+        if (!UIController.getIsInputChat())
         {
-            moveDir.x = Input.GetAxisRaw("Horizontal");
-            moveDir.y = Input.GetAxisRaw("Vertical");
+            if (networkPlayer.IsLocalPlayer())
+            {
+                moveDir.x = Input.GetAxisRaw("Horizontal");
+                moveDir.y = Input.GetAxisRaw("Vertical");
+            } else
+            {
+                moveDir.x = playerInfo.moveDirX;
+                moveDir.y = playerInfo.moveDirY;
+            }
 
             if (moveDir.sqrMagnitude > 0)
             {
                 moveFinalDir = moveDir;
                 sprite.flipX = moveDir.x < 0;
             }
-
             animator.SetFloat("Horizontal", moveDir.x);
             animator.SetFloat("Vertical", moveDir.y);
             animator.SetFloat("Speed", moveDir.sqrMagnitude);
@@ -76,12 +65,6 @@ public class MoveController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!networkPlayer.IsLocalPlayer())
-        {
-            transform.position = Vector2.Lerp(transform.position, newPos, 1f);
-        } else
-        {
-            rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
-        }
+        rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
     }
 }
