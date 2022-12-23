@@ -7,7 +7,7 @@ public class NetworkPlayer : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    public string networkIdentify { get; set; }
+    public string networkIdentify;
     public bool ready = false;
 
     void Start()
@@ -24,7 +24,7 @@ public class NetworkPlayer : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         ready = true;
-        if (IsLocalPlayer()) GameObject.Find("CinemaCamera").GetComponent<CinemachineVirtualCamera>().m_Follow = gameObject.transform;
+        if (IsLocalPlayer()) GameObject.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>().m_Follow = gameObject.transform;
     }
 
     public bool IsLocalPlayer ()

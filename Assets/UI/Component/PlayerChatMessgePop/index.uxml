@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Component/PlayerChatMessgePop/style.uss?fileID=7433441132597879392&amp;guid=4ec16bcd3ddae084d9d68f2bd44b6163&amp;type=3#style" />
+    <Style src="project://database/Assets/UI/Common.uss?fileID=7433441132597879392&amp;guid=cca536a9b7210344b80475419e8171f8&amp;type=3#Common" />
+    <ui:VisualElement name="PlayerMessagePop" class="PlayerMessagePop" style="top: 0;">
+        <ui:ScrollView name="ScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="PlayerMessagePopScroll">
+            <ui:Label text="Label" display-tooltip-when-elided="true" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

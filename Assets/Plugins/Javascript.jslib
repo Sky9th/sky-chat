@@ -1,6 +1,7 @@
 mergeInto(LibraryManager.library, {
     jSLibWebSocketInit: function (url, port) {
         let socket;
+        url = UTF8ToString(url);
         if (!window.WebSocket) {
             window.WebSocket = window.MozWebSocket;
         }
@@ -30,11 +31,10 @@ mergeInto(LibraryManager.library, {
         return socket;
     },
     jSLibWebSocketSend: function (sendStr) {
-        console.log("receive sendstr:", sendStr)
         console.log("send:",  UTF8ToString(sendStr))
         window.jSLibWebSocket.send(UTF8ToString(sendStr));
     },
-    jSLibWebSocketClose: function (sendStr) {
+    jSLibWebSocketClose: function () {
         window.jSLibWebSocket.close();
     }
 });

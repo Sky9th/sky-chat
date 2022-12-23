@@ -22,8 +22,8 @@ public class TcpSendData
 public class Player
 {
     public string mail;
-    public string positionX;
-    public string positionY;
+    public float positionX;
+    public float positionY;
     public float moveDirX;
     public float moveDirY;
 }

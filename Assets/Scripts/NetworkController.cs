@@ -14,6 +14,7 @@ public class NetworkController : MonoBehaviour
 
     private string wsServerUrl = "ws://127.0.0.1";
     private int wsServerPort = 6667;
+    //private string tcpServerUrl = "139.9.221.243";
     private string tcpServerUrl = "127.0.0.1";
     private int tcpServerPort = 6666;
 
@@ -29,14 +30,14 @@ public class NetworkController : MonoBehaviour
 
     private bool isConnected = false;
 
-    /*[DllImport("__Internal")]
+    [DllImport("__Internal")]
     private static extern void jSLibWebSocketInit(string url, int port);
     [DllImport("__Internal")]
     private static extern void jSLibWebSocketSend(string msg);
     [DllImport("__Internal")]
-    private static extern void jSLibWebSocketClose();*/
+    private static extern void jSLibWebSocketClose();
 
-    private ConcurrentQueue<string> recDatas;
+    private List<string> recDatas;
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +46,7 @@ public class NetworkController : MonoBehaviour
         switch (platform)
         {
             case RuntimePlatform.WebGLPlayer:
-                //jSLibWebSocketInit(wsServerUrl, wsServerPort);
+                jSLibWebSocketInit(wsServerUrl, wsServerPort);
                 //wsClient.init(wsServerUrl + ':' + wsServerPort);
                 break;
             default:
@@ -63,7 +64,9 @@ public class NetworkController : MonoBehaviour
             case RuntimePlatform.WebGLPlayer:
                 if (recDatas.Count > 0)
                 {
-                    recDatas.TryDequeue(out msg);
+                    msg = recDatas[0];
+                    Debug.Log("tetsstst"+msg);
+                    recDatas.RemoveAt(0);
                 }
                 break;
             default:
@@ -108,7 +111,7 @@ public class NetworkController : MonoBehaviour
         {
             case RuntimePlatform.WebGLPlayer:
                 //wsClient.Send(msg);
-                //jSLibWebSocketSend(msg);
+                jSLibWebSocketSend(msg);
                 break;
             default:
                 tcpClient.SocketSend(msg);
@@ -122,7 +125,7 @@ public class NetworkController : MonoBehaviour
         switch (platform)
         {
             case RuntimePlatform.WebGLPlayer:
-                //jSLibWebSocketClose();
+                jSLibWebSocketClose();
                 break;
             default:
                 tcpClient.SocketQuit();
@@ -149,6 +152,7 @@ public class NetworkController : MonoBehaviour
 
     public void wsReceiveCallback (string data)
     {
-        recDatas.Enqueue(data);
+        Debug.Log(data);
+        recDatas.Add(data);
     }
 }
