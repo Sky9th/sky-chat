@@ -25,7 +25,6 @@ public class PlayerUiController : MonoBehaviour
         networkIdentify = GetComponent<NetworkPlayer>().networkIdentify;
 
         //VisualTreeAsset visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Component/PlayerChatmessagePopContainer.uxml");
-        Debug.Log(visualTreeAsset);
         uIDocument = GameObject.Find("UIDocument").GetComponent<UIDocument>();
         messagePopContainer = visualTreeAsset.Instantiate();
         messagePopContainer.style.position = Position.Absolute;
@@ -57,7 +56,6 @@ public class PlayerUiController : MonoBehaviour
 
     private void onAllReceived(All obj)
     {
-        Debug.Log(obj);
         if (obj.msgList.ContainsKey(networkIdentify))
         {
             List<Message> inMsg;
