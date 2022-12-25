@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UICenter.getInstance();
+
         networkController = GameObject.Find("NetworkController").GetComponent<NetworkController>();
         GameObject.Find("UIDocument").GetComponent<MainUIController>().sendMsg += getWaitingMsg;
         GameObject.Find("NetworkController").GetComponent<NetworkController>().ActiveReceived += onActiveReceived;
@@ -49,7 +51,7 @@ public class GameController : MonoBehaviour
         PlayerPrefs.SetString(Store.NETWORK_IDENTIFY, data.id);
         player = Instantiate(playerPrefab, spwanPoint.transform.position, Quaternion.identity);
         player.GetComponent<NetworkPlayer>().networkIdentify = data.id;
-
+        PlayerCenter.getInstance();
         sendTcp = StartCoroutine(sendTcpData());
     }
 

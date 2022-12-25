@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Component/Player/ChargeBar/style.uss?fileID=7433441132597879392&amp;guid=28a94a4fbba42e64d96cae641434d19b&amp;type=3#style" />
+    <ui:VisualElement name="ChargeBar" class="ChargeBar" style="width: 15px; height: 80px;">
+        <ui:VisualElement name="Progress" class="Progress" />
+    </ui:VisualElement>
+</ui:UXML>
