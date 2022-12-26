@@ -72,6 +72,7 @@ public class Bow : MonoBehaviour
     {
         GameObject newArrow = Instantiate(arrowPrefab, transform.position, transform.rotation);
         newArrow.GetComponent<Arrow>().height = transform.position.y - PlayerCenter.position.y;
+        newArrow.GetComponent<Arrow>().startY = PlayerCenter.position.y;
         newArrow.GetComponent<Rigidbody2D>().velocity = transform.right * force;
         force = 0;
     }

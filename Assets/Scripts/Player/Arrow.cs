@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    public Vector2 startPos { get; set; }
+    public float startY { get; set; }
+    public float height;
+
     private Rigidbody2D rb;
-    private Vector2 startPos;
     private float groudY;
     private bool isHit;
     private Transform shadow;
+    private int sort = 0;
 
-    public float height;
+
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +51,7 @@ public class Arrow : MonoBehaviour
                 b = Mathf.Cos(angle * Mathf.Deg2Rad) * c;
             }
             shadow.localScale = new Vector2(b / c, 1);
+            gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)Mathf.Ceil(transform.position.y - groudY);
         }
 
         if (transform.position.y - groudY <= 0)
@@ -60,17 +65,10 @@ public class Arrow : MonoBehaviour
             rb.isKinematic = true;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log(collision.tag);
-        if (collision.tag == "Fence")
-        {
-            Debug.Log("Fence");
-            if (transform.position.y - groudY < 0.5)
-            {
-                isHit = true;
-            }
-        }
 
+    public void getHit ()
+    {
+        Debug.Log("get hit");
+        isHit = true;
     }
 }
